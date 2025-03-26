@@ -9,10 +9,10 @@ import cairo
 import pygame
 
 
-def draw_white(surface, x, y):
-    x, y, width, height = (50, 50, 100, 100)
+def draw_white(surface,x, y, width=60, height=60):
+   # x, y, width, height = (50, 50, 100, 100)
     ctx = cairo.Context(surface)
-    ctx.set_line_width(5)
+    #ctx.set_line_width(5)
     ctx.rectangle(x, y, width, height)
     ctx.set_source_rgb(0.8, 0.8, 0.8)
     ctx.fill_preserve()
@@ -22,7 +22,7 @@ def draw_white(surface, x, y):
 def draw_black(surface, x, y, width=60, height=60):
    # x, y, width, height = (150, 50, 100, 100)
     ctx = cairo.Context(surface)
-    ctx.set_line_width(5)
+    #ctx.set_line_width(0)
     ctx.rectangle(x, y, width, height)
     ctx.set_source_rgb(0, 0, 0)
     ctx.fill_preserve()
@@ -33,15 +33,25 @@ def draw_black(surface, x, y, width=60, height=60):
 
 def board(surface):
 
-   for i in range(1, 9):
-     draw_black(surface, i*120, 50)
-       
-       
-       #draw_white(surface, i+150, 50)
+    square_size = 60
 
+    for i in range(8):  # 8 rows
+        for j in range(8):  # 8 columns
+            x_position = i * square_size  + 100
+            y_position = j * square_size  + 250
+            
+            if (i + j) % 2 == 0:
+                draw_black(surface, x_position, y_position)  # Black square
+            else:
+                draw_white(surface, x_position, y_position)  # White square
+
+
+       
+
+  
 
 def main():
-    width, height = 512, 512
+    width, height = 812, 812
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
 
     pygame.init()
