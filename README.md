@@ -1,3 +1,4 @@
+# Matilda - Robotic chess across the internet
 
 This project incorporates mechatronic control, through a Pi5 and six servos, as seen below by the high-level schematic.
 Internetworking will allow the remote player to make moves against the robot. This will be displayed by a Pi vision camera.
