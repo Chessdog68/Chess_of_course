@@ -27,7 +27,8 @@ The diagram below, could be a great starting framework for application!
 
 The basic highlevel schematic below will be a starting point for prototyping. This project, elctro-mechanically.
 At some stage i may need to introduce a servo driver with multi-channel capability, if threading causes delays.
-![alt text](image.png)
+![image](https://github.com/user-attachments/assets/e997b10c-2a47-479b-a8da-4398d5cf6acb)
+
 
 The capture below is the complete and updated robotic arm. This repository came from here: [text](https://howtomechatronics.com/tutorials/arduino/diy-arduino-robot-arm-with-smartphone-control/)
 
