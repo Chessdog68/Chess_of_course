@@ -21,6 +21,7 @@ Code and STL files, staye tuned...
 A modern frame work that may work well for data and internetworking is Flask. 
 Flask will handle web requests, allowing a remote user to interact with the chess game interface over the internet. Using Flask-SocketIO, I can implement WebSockets for real-time communication, ensuring instant moves between the player and the robot. Flask will interface with the robot arm's control API to execute moves physically. The architecture will involve Flask serving the web interface and receiving move commands, which are then sent via WebSockets to the robot controller. The robot's state and moves can be streamed back to the user, ensuring synchronized play.
 The diagram below, could be a great starting framework for application!
+
 ![alt text](image-1.png)
 
 The basic highlevel schematic below will be a starting point for prototyping. This project, elctro-mechanically.
