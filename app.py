@@ -6,10 +6,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # <-- Corrected this line
+    return render_template('index.html')  
 
 board = chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci("stockfish/stockfish-windows-x86-64-avx2.exe")  # Replace with correct path
+#   # Initialize the Stockfish engine
+engine = chess.engine.SimpleEngine.popen_uci("stockfish/stockfish-windows-x86-64-avx2.exe")  
+engine.configure({"Threads": 1, "Hash": 512, "Skill Level": 0})
+# moves and setting level
 
 @app.route("/move", methods=["POST"])
 def move():
