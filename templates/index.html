@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chessboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='chessboard/chessboard-0.1.0.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chessboard/chessboard-1.0.0.min.css') }}">
     <style>
         #board {
             width: 400px;
@@ -14,14 +14,28 @@
 <body>
     <div id="board"></div>
 
+    <!-- Load jQuery first -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='chessboard/chessboard-0.1.0.min.js') }}"></script>
+    
+    <!-- Load Chessboard.js from the static folder -->
+    <script src="{{ url_for('static', filename='chessboard/chessboard-1.0.0.min.js') }}"></script>
+
+    <!-- Initialize Chessboard -->
     <script>
-        var board = Chessboard('board', {
-            draggable: true,
-            dropOffBoard: 'snapback',
-            position: 'start'
-        });
+        // Check if Chessboard is defined
+        console.log("Chessboard:", Chessboard); // This should print the Chessboard object
+
+        // Initialize the board if Chessboard is available
+        if (typeof Chessboard !== 'undefined') {
+            var board = Chessboard('board', {
+                draggable: true,
+                dropOffBoard: 'snapback',
+                position: 'start',
+                pieceTheme: '/static/chessboard/img/chesspieces/wikipedia/{piece}.png'
+            });
+        } else {
+            console.error("Chessboard is not defined!");
+        }
     </script>
 </body>
 </html>
