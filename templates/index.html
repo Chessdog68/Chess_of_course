@@ -5,9 +5,10 @@
     <title>Chessboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='chessboard/chessboard-1.0.0.min.css') }}">
     <style>
-         body {
-        background-color: #011a33; /* Dark blue */
-    }
+        body {
+            background-color: #011a33; /* Dark blue */
+        }
+
         #board {
             width: 400px;
             margin: 30px auto;
@@ -17,28 +18,53 @@
 <body>
     <div id="board"></div>
 
-    <!-- Load jQuery first -->
+    <!-- Load jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <!-- Load Chessboard.js from the static folder -->
+
+    <!-- Load chess.js for move validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.0/chess.min.js"></script>
+
+    <!-- Load Chessboard.js -->
     <script src="{{ url_for('static', filename='chessboard/chessboard-1.0.0.min.js') }}"></script>
 
-    <!-- Initialize Chessboard -->
+    <!-- Initialize Chessboard and game logic -->
     <script>
-        // Check if Chessboard is defined
-        console.log("Chessboard:", Chessboard); // This should print the Chessboard object
+        var game = new Chess();
 
-        // Initialize the board if Chessboard is available
-        if (typeof Chessboard !== 'undefined') {
-            var board = Chessboard('board', {
-                draggable: true,
-                dropOffBoard: 'snapback',
-                position: 'start',
-                pieceTheme: '/static/chessboard/img/chesspieces/wikipedia/{piece}.png'
+        function onDrop(source, target) {
+            var move = game.move({
+                from: source,
+                to: target,
+                promotion: 'q' // always promote to queen
             });
-        } else {
-            console.error("Chessboard is not defined!");
+
+            if (move === null) return 'snapback';
+
+            fetch('/move', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ move: move.from + move.to })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    game.move({
+                        from: data.ai_move.substring(0, 2),
+                        to: data.ai_move.substring(2, 4),
+                        promotion: 'q'
+                    });
+                    board.position(game.fen());
+                }
+            });
         }
+
+        var board = Chessboard('board', {
+            draggable: true,
+            dropOffBoard: 'snapback',
+            position: 'start',
+            pieceTheme: '/static/chessboard/img/chesspieces/wikipedia/{piece}.png',
+            onDrop: onDrop
+        });
     </script>
 </body>
 </html>
