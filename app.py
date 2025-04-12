@@ -14,11 +14,14 @@ engine = chess.engine.SimpleEngine.popen_uci("stockfish/stockfish-windows-x86-64
 engine.configure({"Threads": 1, "Hash": 512, "Skill Level": 0})
 # moves and setting level
 
+#Grab current board state
 @app.route("/move", methods=["POST"])
 def move():
     data = request.get_json()
     move_uci = data.get("move")
 
+
+#   # Check if the move is valid
     try:
         move = chess.Move.from_uci(move_uci)
         if move not in board.legal_moves:
@@ -31,6 +34,7 @@ def move():
         if result.move is None:
             return jsonify({"status": "game over", "ai_move": None}), 200
 
+        # StockFish move  
         board.push(result.move)
 
         return jsonify({
@@ -40,3 +44,8 @@ def move():
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+    
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)

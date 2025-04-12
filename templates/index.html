@@ -27,24 +27,30 @@
     <!-- Load Chessboard.js -->
     <script src="{{ url_for('static', filename='chessboard/chessboard-1.0.0.min.js') }}"></script>
 
-    <!-- Initialize Chessboard and game logic -->
+    <!--------------------------- Chessboard and game here ----------------------------------------------------------- -->
     <script>
         var game = new Chess();
 
+
+        // drop peice and check if the move is valid and updates the board accordingly
         function onDrop(source, target) {
             var move = game.move({
                 from: source,
                 to: target,
-                promotion: 'q' // always promote to queen
+                promotion: 'q' // always promote to queen (for simplicity, change later)
             });
 
             if (move === null) return 'snapback';
 
+// If the move is valid, send it to the server for AI processing
             fetch('/move', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ move: move.from + move.to })
             })
+
+            
+            // Handle the server response
             .then(response => response.json())
             .then(data => {
                 if (data.status === "ok") {
@@ -57,7 +63,7 @@
                 }
             });
         }
-
+// If the move is invalid, snap the piece back to its original position
         var board = Chessboard('board', {
             draggable: true,
             dropOffBoard: 'snapback',
